@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1739420903373" clover="3.2.0">
+  <project timestamp="1739420903373" name="All files">
+    <metrics statements="33" coveredstatements="33" conditionals="13" coveredconditionals="13" methods="2" coveredmethods="2" elements="48" coveredelements="48" complexity="0" loc="33" ncloc="33" packages="1" files="1" classes="1"/>
+    <file name="timeMath.js" path="/Users/allison/htdocs/time-adder/src/timeMath.js">
+      <metrics statements="33" coveredstatements="33" conditionals="13" coveredconditionals="13" methods="2" coveredmethods="2"/>
+      <line num="20" count="1" type="stmt"/>
+      <line num="21" count="1" type="stmt"/>
+      <line num="22" count="1" type="stmt"/>
+      <line num="25" count="1" type="stmt"/>
+      <line num="37" count="63" type="cond" truecount="2" falsecount="0"/>
+      <line num="38" count="22" type="stmt"/>
+      <line num="39" count="22" type="cond" truecount="5" falsecount="0"/>
+      <line num="41" count="63" type="stmt"/>
+      <line num="52" count="19" type="stmt"/>
+      <line num="53" count="19" type="stmt"/>
+      <line num="54" count="19" type="stmt"/>
+      <line num="55" count="19" type="stmt"/>
+      <line num="57" count="19" type="stmt"/>
+      <line num="58" count="21" type="stmt"/>
+      <line num="59" count="21" type="stmt"/>
+      <line num="60" count="21" type="stmt"/>
+      <line num="62" count="21" type="stmt"/>
+      <line num="74" count="19" type="stmt"/>
+      <line num="78" count="19" type="stmt"/>
+      <line num="82" count="19" type="stmt"/>
+      <line num="84" count="19" type="stmt"/>
+      <line num="85" count="19" type="cond" truecount="2" falsecount="0"/>
+      <line num="86" count="9" type="stmt"/>
+      <line num="90" count="19" type="stmt"/>
+      <line num="92" count="19" type="stmt"/>
+      <line num="93" count="19" type="cond" truecount="2" falsecount="0"/>
+      <line num="94" count="10" type="stmt"/>
+      <line num="99" count="19" type="stmt"/>
+      <line num="101" count="19" type="stmt"/>
+      <line num="102" count="19" type="cond" truecount="2" falsecount="0"/>
+      <line num="103" count="12" type="stmt"/>
+      <line num="106" count="19" type="stmt"/>
+      <line num="107" count="19" type="stmt"/>
+    </file>
+  </project>
+</coverage>

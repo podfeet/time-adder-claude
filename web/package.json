@@ -1,0 +1,52 @@
+{
+  "name": "time-adder",
+  "version": "0.0.1",
+  "description": "A JavaScript application to add (and subtract) elapsed time",
+  "main": "src/index-body.js",
+  "type": "module",
+  "jest": {
+    "testEnvironment": "jest-environment-node",
+    "transform": {}
+  },
+  "scripts": {
+    "build": "npx webpack --mode=production",
+    "docs": "docDir='./docs'; [[ -e \"$docDir\" ]] && rm -rf \"$docDir/\"*; npx jsdoc -c ./jsdoc.conf.json --destination \"$docDir/\" --template node_modules/docdash",
+    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest --coverage tape test/*.js",
+    "start": "webpack serve --open",
+    "watch": "webpack --watch"
+  },
+  "watch": {
+    "test": "{src,test}/*.js"
+  },
+  "author": "Allison Sheridan",
+  "license": "ISC",
+  "devDependencies": {
+    "copy-webpack-plugin": "^11.0.0",
+    "css-loader": "^6.7.1",
+    "docdash": "^1.2.0",
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-html": "^6.2.0",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-jsdoc": "^37.5.0",
+    "html-webpack-plugin": "^5.6.3",
+    "jest": "^29.4.3",
+    "jsdoc": "^4.0.3",
+    "nodemon": "^3.1.9",
+    "style-loader": "^3.3.1",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-server": "^4.15.1"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.3",
+    "is-it-check": "^1.1.1",
+    "jquery": "^3.6.1",
+    "mustache": "^4.2.0",
+    "npm-watch": "^0.11.0"
+  },
+  "overrides": {
+    "semver": "7.5.2"
+  }
+}

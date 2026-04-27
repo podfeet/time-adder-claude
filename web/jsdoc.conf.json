@@ -1,0 +1,38 @@
+{
+  "docdash": {
+      "collapse": true,
+      "menu": {
+          "Programming by Stealth": {
+              "href":"https://pbs.bartificer.net",
+              "target": "_blank"
+          },
+          "JSDoc": {
+              "href":"https://jsdoc.app/index.html",
+              "target": "_blank"
+          }
+      },
+      "search": true,
+      "sectionOrder": ["Modules", "Classes", "Tutorials"],
+      "static": true,
+      "typedefs": true
+  },
+  "opts": {
+    "encoding": "utf8",
+    "readme": "README.md",
+    "tutorials": "./pages/",
+    "template": "./node_modules/docdash"
+  },
+  "source": {
+    "include": [
+      "src/script.js",
+      "README.MD"
+    ]
+  }, 
+  "plugins": [
+      "plugins/markdown"
+  ],
+  "tags": {
+      "allowUnknownTags": false,
+      "dictionaries": ["jsdoc","closure"]
+  }
+}
