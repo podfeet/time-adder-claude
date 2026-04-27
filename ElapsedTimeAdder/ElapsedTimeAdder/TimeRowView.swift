@@ -13,32 +13,36 @@ struct TimeRowView: View {
         HStack(spacing: 8) {
 
             // Title
-            TextField("title (opt)", text: $row.title)
+            TextField("", text: $row.title,
+                      prompt: Text("title (opt)").foregroundColor(.primary.opacity(0.5)))
                 .textFieldStyle(.roundedBorder)
                 .frame(maxWidth: .infinity)
 
             // Hours
-            TextField("0", text: $row.hours)
+            TextField("", text: $row.hours,
+                      prompt: Text("0").foregroundColor(.primary.opacity(0.6)))
                 .textFieldStyle(.roundedBorder)
-                .frame(width: 70)
+                .frame(width: 55)
                 .multilineTextAlignment(.center)
 #if os(iOS)
                 .keyboardType(.decimalPad)
 #endif
 
             // Minutes
-            TextField("0", text: $row.minutes)
+            TextField("", text: $row.minutes,
+                      prompt: Text("0").foregroundColor(.primary.opacity(0.6)))
                 .textFieldStyle(.roundedBorder)
-                .frame(width: 70)
+                .frame(width: 55)
                 .multilineTextAlignment(.center)
 #if os(iOS)
                 .keyboardType(.decimalPad)
 #endif
 
             // Seconds
-            TextField("0", text: $row.seconds)
+            TextField("", text: $row.seconds,
+                      prompt: Text("0").foregroundColor(.primary.opacity(0.6)))
                 .textFieldStyle(.roundedBorder)
-                .frame(width: 70)
+                .frame(width: 55)
                 .multilineTextAlignment(.center)
 #if os(iOS)
                 .keyboardType(.decimalPad)

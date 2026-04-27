@@ -73,11 +73,9 @@ struct ContentView: View {
             Button {
                 withAnimation { showExplanation.toggle() }
             } label: {
-                Text(showExplanation ? "Hide" : "Push to Learn How This Works")
-                    .frame(maxWidth: .infinity)
+                Label(showExplanation ? "Hide" : "How it works",
+                      systemImage: "questionmark.circle")
             }
-            .buttonStyle(.borderedProminent)
-            .controlSize(.large)
 
             if showExplanation {
                 VStack(alignment: .leading, spacing: 8) {
@@ -141,11 +139,12 @@ struct ContentView: View {
     private func totalBox(_ text: String) -> some View {
         Text(text)
             .monospacedDigit()
+            .foregroundStyle(.primary)
             .frame(maxWidth: .infinity)
             .padding(.vertical, 6)
             .overlay(
                 RoundedRectangle(cornerRadius: 6)
-                    .stroke(Color.secondary.opacity(0.4), lineWidth: 1)
+                    .stroke(Color.primary.opacity(0.5), lineWidth: 1.5)
             )
     }
 
@@ -156,18 +155,18 @@ struct ContentView: View {
                 .frame(maxWidth: .infinity, maxHeight: 1)
 
             Text("H")
-                .frame(width: 70, alignment: .center)
+                .frame(width: 55, alignment: .center)
             Text("M")
-                .frame(width: 70, alignment: .center)
+                .frame(width: 55, alignment: .center)
             Text("S")
-                .frame(width: 70, alignment: .center)
+                .frame(width: 55, alignment: .center)
 
             // Blank — aligns with +/− button
             Color.clear
                 .frame(width: 44, height: 1)
         }
         .font(.callout.bold())
-        .foregroundStyle(.secondary)
+        .foregroundStyle(.primary)
         .padding(.horizontal, 4)
     }
 
