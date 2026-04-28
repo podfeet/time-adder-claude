@@ -82,7 +82,6 @@ struct ContentView: View {
                     Text("Why not just use Excel, Numbers, or Google Sheets? Because they don't do *elapsed* time — they do absolute time. Add 22:00 + 5:00 in a spreadsheet and you'll get 3:00 AM, not 27:00.")
                     Text("Type hours, minutes, and seconds into each row. Use the **+/−** button to add or subtract that row from the total. The total updates as you type.")
                     Text("Add an optional title to each row, then export as CSV or HH:MM:SS when you're done.")
-                    Text("You can add an optional title for each row, and when you're done, tap \"Export to CSV\" to get the data for a spreadsheet.")
                 }
                 .font(.callout)
                 .foregroundStyle(.secondary)
