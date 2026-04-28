@@ -49,7 +49,7 @@ struct ContentView: View {
                     .padding(.top, 4)
                     .accessibilityIdentifier("addRowButton")
 
-                    Divider().padding(.vertical, 8)
+                    Divider().padding(.vertical, 8).accessibilityHidden(true)
 
                     // Reset
                     resetButton
@@ -90,6 +90,8 @@ struct ContentView: View {
                 .padding()
                 .background(Color.blue.opacity(0.06), in: RoundedRectangle(cornerRadius: 10))
                 .transition(.opacity)
+                .accessibilityElement(children: .contain)
+                .accessibilityIdentifier("explanationPanel")
             }
         }
     }
@@ -130,6 +132,8 @@ struct ContentView: View {
             totalBox(formatTotalValue(total.minutes))
             totalBox(formatTotalValue(total.seconds))
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Total: \(formatTotalValue(total.hours)) hours, \(formatTotalValue(total.minutes)) minutes, \(formatTotalValue(total.seconds)) seconds")
         .font(.title2.bold())
         .padding(.vertical, 10)
         .padding(.horizontal, 8)
@@ -150,20 +154,23 @@ struct ContentView: View {
 
     private var columnHeaders: some View {
         HStack(spacing: 8) {
-            // Blank — aligns with title field
             Color.clear
                 .frame(maxWidth: .infinity, maxHeight: 1)
+                .accessibilityHidden(true)
 
             Text("H")
                 .frame(width: 55, alignment: .center)
+                .accessibilityLabel("Hours")
             Text("M")
                 .frame(width: 55, alignment: .center)
+                .accessibilityLabel("Minutes")
             Text("S")
                 .frame(width: 55, alignment: .center)
+                .accessibilityLabel("Seconds")
 
-            // Blank — aligns with +/− button
             Color.clear
                 .frame(width: 44, height: 1)
+                .accessibilityHidden(true)
         }
         .font(.callout.bold())
         .foregroundStyle(.primary)
