@@ -100,7 +100,7 @@ struct ContentView: View {
                 subject: Text("Elapsed Time Export"),
                 message: Text("Elapsed time data")
             ) {
-                Text("Export to CSV")
+                Text("Export CSV")
                     .frame(maxWidth: .infinity)
             }
             .buttonStyle(.borderedProminent)
@@ -112,7 +112,7 @@ struct ContentView: View {
                 subject: Text("Elapsed Time Export"),
                 message: Text("Elapsed time data")
             ) {
-                Text("Export to HH:MM:SS")
+                Text("Export HH:MM:SS")
                     .frame(maxWidth: .infinity)
             }
             .buttonStyle(.borderedProminent)
