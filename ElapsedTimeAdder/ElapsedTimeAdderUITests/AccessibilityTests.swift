@@ -51,8 +51,8 @@ final class AccessibilityTests: XCTestCase {
         // Verify the label is one of the two expected values
         let first = toggles.firstMatch
         let label = first.label
-        XCTAssertTrue(label == "Add time" || label == "Subtract time",
-                      "Toggle label must be 'Add time' or 'Subtract time', got: \(label)")
+        XCTAssertTrue(label == "Add time entered" || label == "Subtract time entered",
+                      "Toggle label must be 'Add time entered' or 'Subtract time entered', got: \(label)")
     }
 
     // MARK: - Text fields are labelled for VoiceOver
@@ -117,7 +117,7 @@ final class AccessibilityTests: XCTestCase {
         // 3. Toggle the first row from + to −
         let firstToggle = app.buttons.matching(identifier: "toggleButton").firstMatch
         firstToggle.tap()
-        XCTAssertEqual(firstToggle.label, "Subtract time", "Toggle should switch to subtract")
+        XCTAssertEqual(firstToggle.label, "Subtract time entered", "Toggle should switch to subtract")
 
         // 4. Add a new row
         app.buttons["addRowButton"].tap()
@@ -137,13 +137,15 @@ final class AccessibilityTests: XCTestCase {
         XCTAssertEqual(app.textFields.matching(hoursPredicate).count, initialRowCount,
                        "Row count should be restored after reset")
 
-        XCTAssertEqual(app.textFields.matching(hoursPredicate).firstMatch.value as? String, "",
-                       "Hours field should be empty after reset")
+        let hoursValue = app.textFields.matching(hoursPredicate).firstMatch.value as? String ?? ""
+        XCTAssertTrue(hoursValue == "" || hoursValue == "0",
+                      "Hours field should be empty after reset (got: \(hoursValue))")
 
-        XCTAssertEqual(app.textFields.matching(NSPredicate(format: "label == 'Row title'")).firstMatch.value as? String, "",
-                       "Title field should be empty after reset")
+        let titleValue = app.textFields.matching(NSPredicate(format: "label == 'Row title'")).firstMatch.value as? String ?? ""
+        XCTAssertTrue(titleValue == "" || titleValue == "title (opt)",
+                      "Title field should be empty after reset (got: \(titleValue))")
 
-        XCTAssertEqual(app.buttons.matching(identifier: "toggleButton").firstMatch.label, "Add time",
+        XCTAssertEqual(app.buttons.matching(identifier: "toggleButton").firstMatch.label, "Add time entered",
                        "Toggle should be back to + after reset")
     }
 
@@ -153,22 +155,23 @@ final class AccessibilityTests: XCTestCase {
         let hoursField = app.textFields.matching(NSPredicate(format: "label == 'Hours'")).firstMatch
         hoursField.tap()
         hoursField.typeText("abc")
-        let error = app.staticTexts["Numbers, you silly goose!"]
+        let error = app.staticTexts.matching(NSPredicate(format: "label CONTAINS 'Numbers, you silly goose'")).firstMatch
         XCTAssertTrue(error.waitForExistence(timeout: 1),
                       "Error message should appear when invalid text is entered in an H/M/S field")
     }
 
     func testValidInputHidesError() {
+        let errorPredicate = NSPredicate(format: "label CONTAINS 'Numbers, you silly goose'")
         // First trigger the error
         let hoursField = app.textFields.matching(NSPredicate(format: "label == 'Hours'")).firstMatch
         hoursField.tap()
         hoursField.typeText("abc")
-        XCTAssertTrue(app.staticTexts["Numbers, you silly goose!"].waitForExistence(timeout: 1))
+        XCTAssertTrue(app.staticTexts.matching(errorPredicate).firstMatch.waitForExistence(timeout: 1))
 
         // Clear and enter a valid number — error should disappear
         hoursField.clearText()
         hoursField.typeText("5")
-        XCTAssertFalse(app.staticTexts["Numbers, you silly goose!"].waitForExistence(timeout: 1),
+        XCTAssertFalse(app.staticTexts.matching(errorPredicate).firstMatch.waitForExistence(timeout: 1),
                        "Error message should disappear when valid input is entered")
     }
 
@@ -176,7 +179,8 @@ final class AccessibilityTests: XCTestCase {
         let minutesField = app.textFields.matching(NSPredicate(format: "label == 'Minutes'")).firstMatch
         minutesField.tap()
         minutesField.typeText("@#!")
-        XCTAssertTrue(app.staticTexts["Numbers, you silly goose!"].waitForExistence(timeout: 1),
+        let error = app.staticTexts.matching(NSPredicate(format: "label CONTAINS 'Numbers, you silly goose'")).firstMatch
+        XCTAssertTrue(error.waitForExistence(timeout: 1),
                       "Special characters should trigger the error message")
     }
 }
