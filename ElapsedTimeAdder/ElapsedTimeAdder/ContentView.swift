@@ -11,6 +11,9 @@ struct ContentView: View {
     @State private var rows: [TimeRow] = [TimeRow(), TimeRow()]
     @State private var showExplanation = false
     @AccessibilityFocusState private var explanationFocused: Bool
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+
+    private var isWide: Bool { horizontalSizeClass == .regular }
 
     private var total: TimeResult {
         calcTotal(rows: rows)
@@ -74,13 +77,17 @@ struct ContentView: View {
                     // Branding
                     podfeetBranding
                 }
-                .padding()
+                .padding(.horizontal, isWide ? 48 : 16)
+                .padding(.vertical, 16)
+                .frame(maxWidth: isWide ? 900 : .infinity)
+                .frame(maxWidth: .infinity)
             }
             .navigationTitle("Elapsed Time Adder")
 #if os(iOS)
             .toolbar(.hidden, for: .navigationBar)
 #elseif os(macOS)
             .toolbar(.hidden, for: .windowToolbar)
+            .ignoresSafeArea(edges: .top)
 #endif
         }
     }
