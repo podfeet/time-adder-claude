@@ -1,6 +1,6 @@
 //
 //  AccessibilityTests.swift
-//  ElapsedTimeAdderUITests
+//  ElapsedTimeCalculatorUITests
 //
 
 import XCTest

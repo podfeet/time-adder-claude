@@ -1,4 +1,4 @@
-# Elapsed Time Adder — Swift App Requirements
+# Elapsed Time Calculator — Swift App Requirements
 
 ## Overview
 
@@ -21,7 +21,7 @@ A native iOS and macOS app (single SwiftUI multiplatform project) that adds and 
 ### Main Screen (single screen app)
 
 **Header area**
-- App title: "Elapsed Time Adder"
+- App title: "Elapsed Time Calculator"
 - Brief subtitle: "Add and subtract elapsed time"
 - Expandable/collapsible explanation section (tapping a "?" or "How it works" button reveals it):
   > "Type in hours, minutes, and seconds for each row. Use the +/− button to add or subtract that row from the total. The total updates automatically as you type."

@@ -1,12 +1,12 @@
 //
 //  TimeMathTests.swift
-//  ElapsedTimeAdderTests
+//  ElapsedTimeCalculatorTests
 //
 //  Unit tests for the core math logic in TimeMath.swift.
 //  Every test maps to a rule in REQUIREMENTS.md or a known JS edge case.
 
 import XCTest
-@testable import ElapsedTimeAdder
+@testable import ElapsedTimeCalculator
 
 final class TimeMathTests: XCTestCase {
 

@@ -1,6 +1,6 @@
 //
 //  ExportHelpers.swift
-//  ElapsedTimeAdder
+//  ElapsedTimeCalculator
 //
 //  Formats rows + total for CSV and HH:MM:SS export via share sheet.
 

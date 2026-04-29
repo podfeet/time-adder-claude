@@ -1,4 +1,4 @@
-# Elapsed Time Adder — Claude Context
+# Elapsed Time Calculator — Claude Context
 
 ## Proactive memory
 Update this file at the end of every session or whenever a meaningful decision is made, so context is preserved across machines and sessions.
@@ -6,7 +6,7 @@ Update this file at the end of every session or whenever a meaningful decision i
 ---
 
 ## Project goal
-Build a native iOS + macOS app called **Elapsed Time Adder** using SwiftUI (single multiplatform Xcode project). The owner (Allison) has no prior Swift experience — Claude Code is writing the Swift. 
+Build a native iOS + macOS app called **Elapsed Time Calculator** using SwiftUI (single multiplatform Xcode project). The owner (Allison) has no prior Swift experience — Claude Code is writing the Swift. 
 
 The original web app (HTML/CSS/JS/jQuery/Bootstrap) lives in `web/` for reference. Do not modify it.
 

@@ -1,6 +1,6 @@
 //
 //  TimeMath.swift
-//  ElapsedTimeAdder
+//  ElapsedTimeCalculator
 //
 //  Port of web/src/timeMath.js — algorithm preserved exactly.
 

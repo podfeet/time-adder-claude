@@ -1,6 +1,6 @@
 //
-//  ElapsedTimeAdderApp.swift
-//  ElapsedTimeAdder
+//  ElapsedTimeCalculatorApp.swift
+//  ElapsedTimeCalculator
 //
 //  Created by Allison on 4/27/26.
 //
@@ -8,7 +8,7 @@
 import SwiftUI
 
 @main
-struct ElapsedTimeAdderApp: App {
+struct ElapsedTimeCalculatorApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()

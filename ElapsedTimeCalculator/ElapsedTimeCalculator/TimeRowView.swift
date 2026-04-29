@@ -1,6 +1,6 @@
 //
 //  TimeRowView.swift
-//  ElapsedTimeAdder
+//  ElapsedTimeCalculator
 //
 //  UI for a single time-entry row.
 

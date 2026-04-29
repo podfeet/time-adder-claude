@@ -1,6 +1,6 @@
 //
 //  ContentView.swift
-//  ElapsedTimeAdder
+//  ElapsedTimeCalculator
 //
 //  Created by Allison on 4/27/26.
 //
@@ -37,7 +37,7 @@ struct ContentView: View {
                         // Left sidebar: title, how it works, total, export, branding
                         ScrollView {
                             VStack(spacing: 16) {
-                                Text("Elapsed Time Adder")
+                                Text("Elapsed Time Calculator")
                                     .font(.largeTitle.bold())
                                     .frame(maxWidth: .infinity, alignment: .center)
                                     .multilineTextAlignment(.center)
@@ -65,7 +65,7 @@ struct ContentView: View {
                     // MARK: Narrow layout — single column (iPhone)
                     ScrollView {
                         VStack(spacing: 16) {
-                            Text("Elapsed Time Adder")
+                            Text("Elapsed Time Calculator")
                                 .font(.largeTitle.bold())
                                 .frame(maxWidth: .infinity, alignment: .center)
                                 .multilineTextAlignment(.center)
@@ -97,7 +97,7 @@ struct ContentView: View {
                     }
                 }
             }
-            .navigationTitle("Elapsed Time Adder")
+            .navigationTitle("Elapsed Time Calculator")
 #if os(iOS)
             .toolbar(.hidden, for: .navigationBar)
 #elseif os(macOS)

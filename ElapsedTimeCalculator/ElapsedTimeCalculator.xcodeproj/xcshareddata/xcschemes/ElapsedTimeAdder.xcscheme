@@ -16,9 +16,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "37D9E93D2F9FD9D800A68EC9"
-               BuildableName = "ElapsedTimeAdder.app"
-               BlueprintName = "ElapsedTimeAdder"
-               ReferencedContainer = "container:ElapsedTimeAdder.xcodeproj">
+               BuildableName = "ElapsedTimeCalculator.app"
+               BlueprintName = "ElapsedTimeCalculator"
+               ReferencedContainer = "container:ElapsedTimeCalculator.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -36,9 +36,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "37D9E9572FA0367900A68EC9"
-               BuildableName = "ElapsedTimeAdderTests.xctest"
-               BlueprintName = "ElapsedTimeAdderTests"
-               ReferencedContainer = "container:ElapsedTimeAdder.xcodeproj">
+               BuildableName = "ElapsedTimeCalculatorTests.xctest"
+               BlueprintName = "ElapsedTimeCalculatorTests"
+               ReferencedContainer = "container:ElapsedTimeCalculator.xcodeproj">
             </BuildableReference>
          </TestableReference>
          <TestableReference
@@ -47,9 +47,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "37D9E9682FA036AC00A68EC9"
-               BuildableName = "ElapsedTimeAdderUITests.xctest"
-               BlueprintName = "ElapsedTimeAdderUITests"
-               ReferencedContainer = "container:ElapsedTimeAdder.xcodeproj">
+               BuildableName = "ElapsedTimeCalculatorUITests.xctest"
+               BlueprintName = "ElapsedTimeCalculatorUITests"
+               ReferencedContainer = "container:ElapsedTimeCalculator.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -70,9 +70,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "37D9E93D2F9FD9D800A68EC9"
-            BuildableName = "ElapsedTimeAdder.app"
-            BlueprintName = "ElapsedTimeAdder"
-            ReferencedContainer = "container:ElapsedTimeAdder.xcodeproj">
+            BuildableName = "ElapsedTimeCalculator.app"
+            BlueprintName = "ElapsedTimeCalculator"
+            ReferencedContainer = "container:ElapsedTimeCalculator.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -87,9 +87,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "37D9E93D2F9FD9D800A68EC9"
-            BuildableName = "ElapsedTimeAdder.app"
-            BlueprintName = "ElapsedTimeAdder"
-            ReferencedContainer = "container:ElapsedTimeAdder.xcodeproj">
+            BuildableName = "ElapsedTimeCalculator.app"
+            BlueprintName = "ElapsedTimeCalculator"
+            ReferencedContainer = "container:ElapsedTimeCalculator.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
