@@ -197,6 +197,8 @@ struct ContentView: View {
         .buttonStyle(.bordered)
         .tint(.red)
         .padding(.bottom, 8)
+        .accessibilityLabel("Reset all entries")
+        .accessibilityHint("Clears all rows and returns to two empty rows")
         .accessibilityIdentifier("resetButton")
     }
 
