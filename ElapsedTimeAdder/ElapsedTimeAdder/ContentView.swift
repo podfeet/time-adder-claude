@@ -79,6 +79,8 @@ struct ContentView: View {
             .navigationTitle("Elapsed Time Adder")
 #if os(iOS)
             .toolbar(.hidden, for: .navigationBar)
+#elseif os(macOS)
+            .toolbar(.hidden, for: .windowToolbar)
 #endif
         }
     }
