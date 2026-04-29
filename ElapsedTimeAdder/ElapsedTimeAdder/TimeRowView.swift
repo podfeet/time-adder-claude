@@ -55,6 +55,12 @@ struct TimeRowView: View {
             // +/− toggle (right side, matching web app)
             Button {
                 row.isSubtracting.toggle()
+                let announcement = row.isSubtracting
+                    ? "Subtract time entered, press to change to add"
+                    : "Add time entered, press to change to subtract"
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    AccessibilityNotification.Announcement(announcement).post()
+                }
             } label: {
                 Text(row.isSubtracting ? "−" : "+")
                     .font(.title3.bold())
@@ -66,8 +72,8 @@ struct TimeRowView: View {
                     )
             }
             .buttonStyle(.plain)
-            .accessibilityLabel(row.isSubtracting ? "Subtract time" : "Add time")
-            .accessibilityHint("Toggles whether this time is added or subtracted from the total")
+            .accessibilityLabel(row.isSubtracting ? "Subtract time entered" : "Add time entered")
+            .accessibilityHint(row.isSubtracting ? "Press to change to add" : "Press to change to subtract")
             .accessibilityIdentifier("toggleButton")
         }
         .padding(.vertical, 2)
