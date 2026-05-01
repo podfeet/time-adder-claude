@@ -41,7 +41,6 @@ struct ContentView: View {
                                     .frame(maxWidth: .infinity, alignment: .center)
                                     .multilineTextAlignment(.center)
                                 usageHint
-                                totalSection
                                 sidebarExportButtons
                                 Spacer(minLength: 32)
                                 spreadsheetButton
@@ -71,11 +70,11 @@ struct ContentView: View {
                                 .multilineTextAlignment(.center)
                             usageHint
                             exportButtons
-                            totalSection
                             columnHeaders
                             ForEach(rows) { row in
                                 TimeRowView(row: row)
                             }
+                            totalSection
                             Button {
                                 rows.append(TimeRow())
                             } label: {
@@ -115,6 +114,7 @@ struct ContentView: View {
             ForEach(rows) { row in
                 TimeRowView(row: row)
             }
+            totalSection
             Button {
                 rows.append(TimeRow())
             } label: {
@@ -149,7 +149,7 @@ struct ContentView: View {
             } label: {
                 Label(showSpreadsheetNote ? "Hide" : "Why not use a spreadsheet?",
                       systemImage: "tablecells")
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(.blue)
                     .font(.footnote)
             }
             .buttonStyle(.plain)
