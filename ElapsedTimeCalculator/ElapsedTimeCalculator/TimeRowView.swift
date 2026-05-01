@@ -68,6 +68,7 @@ struct TimeRowView: View {
                 }
                 .pickerStyle(.segmented)
                 .frame(width: 64)
+                .tint(row.isSubtracting ? .red : .green)
                 .accessibilityLabel("Add or subtract this row")
                 .accessibilityIdentifier("toggleButton")
             }
@@ -85,7 +86,11 @@ struct TimeRowView: View {
                 }
             }
         }
-        .padding(.vertical, 2)
+        .padding(10)
+        .background(
+            RoundedRectangle(cornerRadius: 10)
+                .fill(row.isSubtracting ? Color.red.opacity(0.08) : Color.green.opacity(0.08))
+        )
     }
 
     private func fieldBorder(valid: Bool) -> some View {
