@@ -285,7 +285,7 @@ struct ContentView: View {
                 .accessibilityLabel("Seconds")
 
             Color.clear
-                .frame(width: 44, height: 1)
+                .frame(width: 64, height: 1)
                 .accessibilityHidden(true)
         }
         .font(.callout.bold())
