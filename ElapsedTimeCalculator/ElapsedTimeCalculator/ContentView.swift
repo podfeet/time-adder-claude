@@ -274,13 +274,13 @@ struct ContentView: View {
                 .frame(maxWidth: .infinity, maxHeight: 1)
                 .accessibilityHidden(true)
 
-            Text("H")
+            Text("Hrs")
                 .frame(width: 55, alignment: .center)
                 .accessibilityLabel("Hours")
-            Text("M")
+            Text("Min")
                 .frame(width: 55, alignment: .center)
                 .accessibilityLabel("Minutes")
-            Text("S")
+            Text("Sec")
                 .frame(width: 55, alignment: .center)
                 .accessibilityLabel("Seconds")
 
