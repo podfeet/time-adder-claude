@@ -33,7 +33,7 @@ struct ContentView: View {
                     // MARK: Wide layout — sidebar + main column
                     HStack(alignment: .top, spacing: 0) {
 
-                        // Left sidebar: title, how it works, total, export, branding
+                        // Left sidebar: title, usage hint, export, branding
                         ScrollView {
                             VStack(spacing: 16) {
                                 Text("Elapsed Time Calculator")
@@ -59,6 +59,7 @@ struct ContentView: View {
                                 .padding()
                         }
                     }
+                    .ignoresSafeArea(edges: .leading)
 
                 } else {
                     // MARK: Narrow layout — single column (iPhone)
@@ -97,6 +98,11 @@ struct ContentView: View {
                     }
                 }
             }
+            .onAppear {
+                if isWide, rows.count < 5 {
+                    rows.append(contentsOf: (rows.count..<5).map { _ in TimeRow() })
+                }
+            }
             .navigationTitle("Elapsed Time Calculator")
 #if os(iOS)
             .toolbar(.hidden, for: .navigationBar)
@@ -125,11 +131,14 @@ struct ContentView: View {
                     .background(Color.blue.opacity(0.12), in: RoundedRectangle(cornerRadius: 8))
             }
             .buttonStyle(.plain)
+            .frame(maxWidth: 320)
+            .frame(maxWidth: .infinity, alignment: .center)
             .padding(.top, 4)
             .accessibilityIdentifier("addRowButton")
             Divider().padding(.vertical, 8).accessibilityHidden(true)
             resetButton
         }
+        .frame(maxWidth: 560)
     }
 
     // MARK: - Subviews
@@ -302,6 +311,8 @@ struct ContentView: View {
                 .background(Color.red.opacity(0.12), in: RoundedRectangle(cornerRadius: 8))
         }
         .buttonStyle(.plain)
+        .frame(maxWidth: isWide ? 320 : .infinity)
+        .frame(maxWidth: .infinity, alignment: .center)
         .padding(.bottom, 8)
         .accessibilityLabel("Reset all entries")
         .accessibilityHint("Clears all rows and returns to two empty rows")
