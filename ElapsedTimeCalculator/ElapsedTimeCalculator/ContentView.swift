@@ -70,11 +70,11 @@ struct ContentView: View {
                                 .multilineTextAlignment(.center)
                             usageHint
                             exportButtons
+                            totalSection
                             columnHeaders
                             ForEach(rows) { row in
                                 TimeRowView(row: row)
                             }
-                            totalSection
                             Button {
                                 rows.append(TimeRow())
                             } label: {
@@ -110,11 +110,11 @@ struct ContentView: View {
     // Used by the wide sidebar layout for the right-hand column
     private var rowsSection: some View {
         VStack(spacing: 16) {
+            totalSection
             columnHeaders
             ForEach(rows) { row in
                 TimeRowView(row: row)
             }
-            totalSection
             Button {
                 rows.append(TimeRow())
             } label: {
@@ -237,31 +237,30 @@ struct ContentView: View {
     private var totalSection: some View {
         HStack(spacing: 8) {
             Text("Total")
-                .frame(maxWidth: .infinity)
-                .multilineTextAlignment(.center)
+                .frame(maxWidth: .infinity, alignment: .trailing)
+                .foregroundStyle(.secondary)
 
             totalBox(formatTotalValue(total.hours), error: hasAnyError)
             totalBox(formatTotalValue(total.minutes), error: hasAnyError)
             totalBox(formatTotalValue(total.seconds), error: hasAnyError)
+
+            Color.clear.frame(width: 64) // gap aligning with the Add/Subtract picker
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("Total: \(formatTotalValue(total.hours)) hours, \(formatTotalValue(total.minutes)) minutes, \(formatTotalValue(total.seconds)) seconds")
-        .font(.title2.bold())
-        .padding(.vertical, 10)
-        .padding(.horizontal, 8)
-        .background(Color.secondary.opacity(0.12), in: RoundedRectangle(cornerRadius: 10))
+        .font(.body.bold())
+        .padding(.horizontal, 4)
     }
 
     private func totalBox(_ text: String, error: Bool = false) -> some View {
         Text(text)
             .monospacedDigit()
-            .foregroundStyle(error ? .red : .primary)
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 8)
-            .background(.background, in: RoundedRectangle(cornerRadius: 8))
-            .shadow(color: .primary.opacity(0.12), radius: 3, x: 0, y: 1)
+            .foregroundStyle(error ? .red : .secondary)
+            .frame(width: 55)
+            .padding(.vertical, 6)
+            .background(Color.secondary.opacity(0.08), in: RoundedRectangle(cornerRadius: 6))
             .overlay(
-                RoundedRectangle(cornerRadius: 8)
+                RoundedRectangle(cornerRadius: 6)
                     .stroke(error ? Color.red : Color.clear, lineWidth: 2)
             )
     }
