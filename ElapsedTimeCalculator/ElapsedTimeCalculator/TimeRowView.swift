@@ -88,7 +88,7 @@ struct TimeRowView: View {
             if hasError {
                 HStack(spacing: 8) {
                     Color.clear.frame(maxWidth: .infinity)
-                    Text("Numbers, you silly goose!")
+                    Text("Positive numbers, you silly goose!")
                         .font(.caption)
                         .foregroundStyle(.red)
                         .frame(width: 55 * 3 + 8 * 2, alignment: .leading)
