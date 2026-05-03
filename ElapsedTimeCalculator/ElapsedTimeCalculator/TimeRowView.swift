@@ -92,7 +92,8 @@ struct TimeRowView: View {
                         .font(.caption)
                         .foregroundStyle(.red)
                         .frame(width: 55 * 3 + 8 * 2, alignment: .leading)
-                        .accessibilityLabel("Invalid input. Numbers, you silly goose!")
+                        .accessibilityLabel("Invalid input. Positive numbers, you silly goose!")
+                        .accessibilityIdentifier("errorMessage")
                     Color.clear.frame(width: 64)
                 }
             }

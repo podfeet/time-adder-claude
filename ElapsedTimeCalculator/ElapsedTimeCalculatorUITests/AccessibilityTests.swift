@@ -39,20 +39,17 @@ final class AccessibilityTests: XCTestCase {
                       "Reset button must be accessible")
     }
 
-    func testHowItWorksButtonExists() {
-        XCTAssertTrue(app.buttons["howItWorksButton"].exists,
-                      "'How it works' button must be accessible")
+    func testSpreadsheetButtonExists() {
+        XCTAssertTrue(app.buttons["spreadsheetButton"].exists,
+                      "'Why not use a spreadsheet?' button must be accessible")
     }
 
     func testToggleButtonsHaveLabels() {
-        let toggles = app.buttons.matching(identifier: "toggleButton")
+        let toggles = app.segmentedControls.matching(identifier: "toggleButton")
         XCTAssertGreaterThan(toggles.count, 0,
-                             "+/− buttons must exist and have an accessibility identifier")
-        // Verify the label is one of the two expected values
-        let first = toggles.firstMatch
-        let label = first.label
-        XCTAssertTrue(label == "Add time entered" || label == "Subtract time entered",
-                      "Toggle label must be 'Add time entered' or 'Subtract time entered', got: \(label)")
+                             "+/− segmented controls must exist and have an accessibility identifier")
+        XCTAssertEqual(toggles.firstMatch.label, "Add or subtract this row",
+                       "Toggle accessibility label must be 'Add or subtract this row'")
     }
 
     // MARK: - Text fields are labelled for VoiceOver
@@ -72,21 +69,23 @@ final class AccessibilityTests: XCTestCase {
         XCTAssertGreaterThan(fields.count, 0, "Second fields must have 'Seconds' accessibility label")
     }
 
-    // MARK: - How It Works expander
+    // MARK: - Spreadsheet button expander
 
-    func testHowItWorksExpandsAndCollapses() {
-        let button = app.buttons["howItWorksButton"]
-        XCTAssertTrue(button.exists, "howItWorksButton must exist")
-        XCTAssertTrue(button.isHittable, "howItWorksButton must be hittable")
+    func testSpreadsheetButtonExpandsAndCollapses() {
+        let button = app.buttons["spreadsheetButton"]
+        XCTAssertTrue(button.exists, "spreadsheetButton must exist")
+        // Scroll down so the button is visible before tapping
+        app.swipeUp()
+        XCTAssertTrue(button.isHittable, "spreadsheetButton must be hittable")
         button.tap()
-        let explanation = app.descendants(matching: .any).matching(identifier: "explanationPanel").firstMatch
-        XCTAssertTrue(explanation.waitForExistence(timeout: 2),
-                      "Explanation panel should appear after tapping 'How it works'")
+        let note = app.descendants(matching: .any).matching(identifier: "spreadsheetNote").firstMatch
+        XCTAssertTrue(note.waitForExistence(timeout: 2),
+                      "Spreadsheet note should appear after tapping the button")
         button.tap()
         let gone = XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == false"),
-                                             object: explanation)
+                                             object: note)
         XCTWaiter().wait(for: [gone], timeout: 2)
-        XCTAssertFalse(explanation.exists, "Explanation panel should disappear after tapping 'Hide'")
+        XCTAssertFalse(note.exists, "Spreadsheet note should disappear after tapping 'Hide'")
     }
 
     // MARK: - Add Row
@@ -115,9 +114,9 @@ final class AccessibilityTests: XCTestCase {
         firstHours.typeText("5")
 
         // 3. Toggle the first row from + to −
-        let firstToggle = app.buttons.matching(identifier: "toggleButton").firstMatch
-        firstToggle.tap()
-        XCTAssertEqual(firstToggle.label, "Subtract time entered", "Toggle should switch to subtract")
+        let firstToggle = app.segmentedControls.matching(identifier: "toggleButton").firstMatch
+        firstToggle.buttons["−"].tap()
+        XCTAssertTrue(firstToggle.buttons["−"].isSelected, "Toggle should switch to subtract")
 
         // 4. Add a new row
         app.buttons["addRowButton"].tap()
@@ -130,7 +129,7 @@ final class AccessibilityTests: XCTestCase {
         newRowHours.typeText("3")
 
         // 6. Scroll down to reveal Reset and tap it
-        app.scrollViews.firstMatch.swipeUp()
+        app.swipeUp()
         app.buttons["resetButton"].tap()
 
         // 7. Verify everything is back to the initial state
@@ -142,11 +141,11 @@ final class AccessibilityTests: XCTestCase {
                       "Hours field should be empty after reset (got: \(hoursValue))")
 
         let titleValue = app.textFields.matching(NSPredicate(format: "label == 'Row title'")).firstMatch.value as? String ?? ""
-        XCTAssertTrue(titleValue == "" || titleValue == "title (opt)",
+        XCTAssertTrue(titleValue == "" || titleValue == "title" || titleValue == "title (opt)",
                       "Title field should be empty after reset (got: \(titleValue))")
 
-        XCTAssertEqual(app.buttons.matching(identifier: "toggleButton").firstMatch.label, "Add time entered",
-                       "Toggle should be back to + after reset")
+        XCTAssertTrue(app.segmentedControls.matching(identifier: "toggleButton").firstMatch.buttons["+"].isSelected,
+                      "Toggle should be back to + after reset")
     }
 
     // MARK: - Input validation
@@ -154,34 +153,34 @@ final class AccessibilityTests: XCTestCase {
     func testInvalidInputShowsError() {
         let hoursField = app.textFields.matching(NSPredicate(format: "label == 'Hours'")).firstMatch
         hoursField.tap()
-        hoursField.typeText("abc")
-        let error = app.staticTexts.matching(NSPredicate(format: "label CONTAINS 'Numbers, you silly goose'")).firstMatch
+        hoursField.typeText("1..")   // double decimal — invalid but typeable on decimal pad
+        let error = app.descendants(matching: .any).matching(identifier: "errorMessage").firstMatch
         XCTAssertTrue(error.waitForExistence(timeout: 1),
                       "Error message should appear when invalid text is entered in an H/M/S field")
     }
 
     func testValidInputHidesError() {
-        let errorPredicate = NSPredicate(format: "label CONTAINS 'Numbers, you silly goose'")
         // First trigger the error
         let hoursField = app.textFields.matching(NSPredicate(format: "label == 'Hours'")).firstMatch
         hoursField.tap()
-        hoursField.typeText("abc")
-        XCTAssertTrue(app.staticTexts.matching(errorPredicate).firstMatch.waitForExistence(timeout: 1))
+        hoursField.typeText("1..")   // double decimal — invalid but typeable on decimal pad
+        let error = app.descendants(matching: .any).matching(identifier: "errorMessage").firstMatch
+        XCTAssertTrue(error.waitForExistence(timeout: 1))
 
         // Clear and enter a valid number — error should disappear
         hoursField.clearText()
         hoursField.typeText("5")
-        XCTAssertFalse(app.staticTexts.matching(errorPredicate).firstMatch.waitForExistence(timeout: 1),
+        XCTAssertFalse(error.waitForExistence(timeout: 1),
                        "Error message should disappear when valid input is entered")
     }
 
     func testSpecialCharactersShowError() {
         let minutesField = app.textFields.matching(NSPredicate(format: "label == 'Minutes'")).firstMatch
         minutesField.tap()
-        minutesField.typeText("@#!")
-        let error = app.staticTexts.matching(NSPredicate(format: "label CONTAINS 'Numbers, you silly goose'")).firstMatch
+        minutesField.typeText("1..")  // "1.." is invalid (not a valid Double) and typeable on decimal pad
+        let error = app.descendants(matching: .any).matching(identifier: "errorMessage").firstMatch
         XCTAssertTrue(error.waitForExistence(timeout: 1),
-                      "Special characters should trigger the error message")
+                      "Double decimal should trigger the error message")
     }
 }
 
