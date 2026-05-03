@@ -63,6 +63,17 @@ REQUIREMENTS.md  full feature spec for the Swift app
 CLAUDE.md        this file
 ```
 
+## iPhone layout: List instead of ScrollView
+
+SwiftUI's `ScrollView` on iOS delays touch delivery to child views while deciding if a gesture is a scroll — causes text fields to require multiple taps to focus. **Fix: use `List` with `.listStyle(.plain)` and `.scrollContentBackground(.hidden)` for the narrow layout.** `List` is backed by `UITableView` which handles the scroll/tap distinction correctly.
+
+- Each list row uses a `plainRow(top:bottom:)` helper (private extension on `View`) that applies `.listRowSeparator(.hidden)`, `.listRowBackground(Color.clear)`, and `listRowInsets(leading: 16, trailing: 16)`
+- `columnHeaders` needs `.padding(.horizontal, 10)` before `.plainRow()` to match `TimeRowView`'s internal `.padding(10)` — without it the Hrs/Min/Sec headers are right-justified against the field edges instead of centered above them
+- `UIScrollView.appearance().delaysContentTouches = false` breaks ALL of SwiftUI's gesture handling — never use it
+- A targeted `UIViewRepresentable` walk-up-the-hierarchy approach also failed inconsistently across devices (iPhone 17 Pro vs 15 Pro)
+
+---
+
 ## UX improvements (intuitive-interface branch)
 
 Four changes made to improve discoverability for new users:
@@ -74,8 +85,10 @@ Four changes made to improve discoverability for new users:
 3. **Expanded column headers** (`ContentView.swift`) — `H / M / S` → `Hrs / Min / Sec`.
 
 4. **Persistent usage hint + spreadsheet button** (`ContentView.swift`) — replaced the hidden "How it works" toggle with:
-   - Always-visible one-liner under the title: *"Enter a time in each row and choose Add (+) or Subtract (−). The total updates as you type."*
+   - Always-visible one-liner under the title (centered): *"Enter a time in each row and choose Add (+) or Subtract (−). The total updates as you type."*
    - Small blue "Why not use a spreadsheet?" button at the bottom (collapsible, footnote size)
+
+5. **Plain-English total** (`ContentView.swift`) — iPhone layout shows a `.title2.bold()` summary line (e.g. *"1 hr 23 min 45 sec"*) below the rows instead of the H/M/S boxes. Wide layout keeps the H/M/S boxes in the sidebar column. Export buttons moved to below "Add Another Row".
 
 **Row layout** (both narrow and wide): title field on line 1 full-width; H/M/S fields + +/− picker share line 2. On iOS the title placeholder is just "title"; on macOS/iPadOS it says "title (opt)".
 
@@ -99,5 +112,8 @@ Four changes made to improve discoverability for new users:
 - **project.pbxproj uses `PBXFileSystemSynchronizedRootGroup`** — no need to manually register new `.swift` files; Xcode auto-includes everything in the target folders
 - **After the project rename**, `TEST_TARGET_NAME` in the UITests build config was still set to `ElapsedTimeAdder`, causing UI tests to silently not run — fixed by updating all stale name references in `project.pbxproj` via `sed`
 - **SwiftUI keyboard toolbar** (`placement: .keyboard`) is very buggy — `Spacer()` inside `ToolbarItemGroup` creates an invisible overlay that blocks taps on content below; don't use it
+- **Negative padding** (e.g. `.padding(.bottom, -10)`) moves views visually but leaves the original layout frame in place, causing invisible hit-area overlap that blocks taps — never use it
+- **`UIScrollView.appearance().delaysContentTouches = false`** breaks ALL SwiftUI gesture handling app-wide — never use it
+- **iPhone narrow layout uses `List` not `ScrollView`** — see "iPhone layout" section above for details and the `columnHeaders` alignment fix
 - **Worktree vs main project**: Claude Code runs in a git worktree (`.claude/worktrees/…`) but Xcode opens the main project directory — always edit files in `/Users/allison/htdocs/elapsed-time-calculator/ElapsedTimeCalculator/` not the worktree path
 - **Wide layout safe area**: use `.ignoresSafeArea(edges: .leading)` on the HStack (not just on the background color) to make the sidebar reach the left screen edge on iPad
