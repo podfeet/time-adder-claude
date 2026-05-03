@@ -79,7 +79,9 @@ struct ContentView: View {
                         .padding(.horizontal, 10)
                         .plainRow(top: 4, bottom: 0)
                     ForEach(rows) { row in
-                        TimeRowView(row: row)
+                        TimeRowView(row: row,
+                                    isLast: row.id == rows.last?.id,
+                                    onAddRow: { rows.append(TimeRow()) })
                             .plainRow(top: 4, bottom: 4)
                     }
                     totalSummarySection
@@ -127,7 +129,9 @@ struct ContentView: View {
             columnHeaders
                 .padding(.horizontal, 10)
             ForEach(rows) { row in
-                TimeRowView(row: row)
+                TimeRowView(row: row,
+                            isLast: row.id == rows.last?.id,
+                            onAddRow: { rows.append(TimeRow()) })
             }
             totalSummarySection
             Button {

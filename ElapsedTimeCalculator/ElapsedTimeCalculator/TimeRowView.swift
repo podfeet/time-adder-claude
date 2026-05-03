@@ -8,6 +8,8 @@ import SwiftUI
 
 struct TimeRowView: View {
     @Bindable var row: TimeRow
+    var isLast: Bool = false
+    var onAddRow: (() -> Void)? = nil
 
     private var hoursValid:   Bool { isValidTimeInput(row.hours) }
     private var minutesValid: Bool { isValidTimeInput(row.minutes) }
@@ -57,7 +59,7 @@ struct TimeRowView: View {
                     .keyboardType(.decimalPad)
 #endif
 
-                // Seconds
+                // Seconds — Tab on the last row's seconds field adds a new row
                 TextField("", text: $row.seconds,
                           prompt: Text("0").foregroundColor(.primary.opacity(0.6)))
                     .textFieldStyle(.roundedBorder)
@@ -65,6 +67,7 @@ struct TimeRowView: View {
                     .multilineTextAlignment(.center)
                     .accessibilityLabel("Seconds")
                     .overlay(fieldBorder(valid: secondsValid))
+                    .modifier(TabToAddRowModifier(isLast: isLast, action: onAddRow))
 #if os(iOS)
                     .keyboardType(.decimalPad)
 #endif
@@ -104,5 +107,23 @@ struct TimeRowView: View {
     private func fieldBorder(valid: Bool) -> some View {
         RoundedRectangle(cornerRadius: 6)
             .stroke(valid ? Color.clear : Color.red, lineWidth: 2)
+    }
+}
+
+// Applies onKeyPress(.tab) only when isLast is true — no modifier at all on other rows,
+// which avoids disrupting List's touch delivery.
+private struct TabToAddRowModifier: ViewModifier {
+    let isLast: Bool
+    let action: (() -> Void)?
+
+    func body(content: Content) -> some View {
+        if isLast, let action {
+            content.onKeyPress(.tab) {
+                action()
+                return .handled
+            }
+        } else {
+            content
+        }
     }
 }
