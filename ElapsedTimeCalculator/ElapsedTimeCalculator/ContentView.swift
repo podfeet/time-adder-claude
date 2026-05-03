@@ -128,11 +128,12 @@ struct ContentView: View {
     // Used by the wide sidebar layout for the right-hand column
     private var rowsSection: some View {
         VStack(spacing: 16) {
-            totalSection
             columnHeaders
+                .padding(.horizontal, 10)
             ForEach(rows) { row in
                 TimeRowView(row: row)
             }
+            totalSummarySection
             Button {
                 rows.append(TimeRow())
             } label: {
