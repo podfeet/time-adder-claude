@@ -85,10 +85,12 @@ Four changes made to improve discoverability for new users:
 3. **Expanded column headers** (`ContentView.swift`) — `H / M / S` → `Hrs / Min / Sec`.
 
 4. **Persistent usage hint + spreadsheet button** (`ContentView.swift`) — replaced the hidden "How it works" toggle with:
-   - Always-visible one-liner under the title (centered): *"Enter a time in each row and choose Add (+) or Subtract (−). The total updates as you type."*
+   - Always-visible two-liner under the title (centered), with hardcoded `\n` breaks: *"Enter a time in each row and\nchoose Add (+) or Subtract (−).\nThe total updates as you type."*
    - Small blue "Why not use a spreadsheet?" button at the bottom (collapsible, footnote size)
 
 5. **Plain-English total** (`ContentView.swift`) — both iPhone and iPad/Mac show a `.title2.bold()` summary line (e.g. *"1 hr 23 min 45 sec"*) below the rows. The H/M/S total boxes (`totalSection`, `totalBox`) have been deleted. Export buttons moved to below "Add Another Row" on iPhone.
+
+6. **Tab-to-add-row** (`TimeRowView.swift`) — pressing Tab from the last row's seconds field adds a new row. Implemented via `TabToAddRowModifier` (private `ViewModifier`) applied only to the last row using `isLast` + `onAddRow` params passed from ContentView's ForEach. Error message updated to "Positive numbers, you silly goose!"
 
 **Row layout** (both narrow and wide): title field on line 1 full-width; H/M/S fields + +/− picker share line 2. On iOS the title placeholder is just "title"; on macOS/iPadOS it says "title (opt)".
 
@@ -122,3 +124,4 @@ Four changes made to improve discoverability for new users:
 - **Wide layout safe area**: use `.ignoresSafeArea(edges: .leading)` on the sidebar `ScrollView` inside `NavigationSplitView` to make the sidebar background reach the left screen edge on iPad
 - **`NavigationSplitView` blank column**: `WindowGroup` on iPad creates a `UISplitViewController` primary column regardless of `NavigationStack` — only `NavigationSplitView` gives you explicit control over both columns. Use it for any wide layout with a sidebar.
 - **`.prominentDetail` hides the sidebar** — use `.balanced` to keep both columns visible
+- **`onKeyPress` on multiple TextFields inside `List` breaks touch delivery** — even returning `.ignored` is enough to disrupt `UITableView`'s touch handling. Fix: use a `ViewModifier` that conditionally applies `onKeyPress` only when needed (e.g. `isLast`), so non-target rows get zero modification. See `TabToAddRowModifier` in `TimeRowView.swift`.
