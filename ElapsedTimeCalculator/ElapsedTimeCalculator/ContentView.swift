@@ -267,36 +267,6 @@ struct ContentView: View {
             .accessibilityLabel("Total: \(totalSummary)")
     }
 
-    private var totalSection: some View {
-        HStack(spacing: 8) {
-            Text("Total")
-                .frame(maxWidth: .infinity, alignment: .trailing)
-                .foregroundStyle(.secondary)
-
-            totalBox(formatTotalValue(total.hours), error: hasAnyError)
-            totalBox(formatTotalValue(total.minutes), error: hasAnyError)
-            totalBox(formatTotalValue(total.seconds), error: hasAnyError)
-
-            Color.clear.frame(width: 64) // gap aligning with the Add/Subtract picker
-        }
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Total: \(totalSummary)")
-        .font(.body.bold())
-        .padding(.horizontal, 4)
-    }
-
-    private func totalBox(_ text: String, error: Bool = false) -> some View {
-        Text(text)
-            .monospacedDigit()
-            .foregroundStyle(error ? .red : .secondary)
-            .frame(width: 55)
-            .padding(.vertical, 6)
-            .background(Color.secondary.opacity(0.08), in: RoundedRectangle(cornerRadius: 6))
-            .overlay(
-                RoundedRectangle(cornerRadius: 6)
-                    .stroke(error ? Color.red : Color.clear, lineWidth: 2)
-            )
-    }
 
     private var columnHeaders: some View {
         HStack(spacing: 8) {
