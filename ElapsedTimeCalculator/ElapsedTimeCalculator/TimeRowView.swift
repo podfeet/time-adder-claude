@@ -19,19 +19,11 @@ struct TimeRowView: View {
             HStack(spacing: 8) {
 
                 // Title
-#if os(iOS)
-                TextField("", text: $row.title,
-                          prompt: Text("title").foregroundColor(.primary.opacity(0.5)))
-                    .textFieldStyle(.roundedBorder)
-                    .frame(maxWidth: .infinity)
-                    .accessibilityLabel("Row title")
-#else
                 TextField("", text: $row.title,
                           prompt: Text("title (opt)").foregroundColor(.primary.opacity(0.5)))
                     .textFieldStyle(.roundedBorder)
                     .frame(maxWidth: .infinity)
                     .accessibilityLabel("Row title")
-#endif
 
                 // Hours
                 TextField("", text: $row.hours,
@@ -69,36 +61,45 @@ struct TimeRowView: View {
                     .keyboardType(.decimalPad)
 #endif
 
-                // +/− segmented picker
-                Picker("", selection: $row.isSubtracting) {
-                    Text("+").tag(false)
-                    Text("−").tag(true)
+                // +/− toggle (right side)
+                Button {
+                    row.isSubtracting.toggle()
+                    let announcement = row.isSubtracting
+                        ? "Subtract time entered, press to change to add"
+                        : "Add time entered, press to change to subtract"
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                        AccessibilityNotification.Announcement(announcement).post()
+                    }
+                } label: {
+                    Text(row.isSubtracting ? "−" : "+")
+                        .font(.title3.bold())
+                        .frame(width: 44, height: 44)
+                        .foregroundColor(row.isSubtracting ? .red : .blue)
+                        .background(
+                            RoundedRectangle(cornerRadius: 6)
+                                .stroke(row.isSubtracting ? Color.red : Color.blue, lineWidth: 1.5)
+                        )
                 }
-                .pickerStyle(.segmented)
-                .frame(width: 64)
-                .tint(row.isSubtracting ? .red : .green)
-                .accessibilityLabel("Add or subtract this row")
+                .buttonStyle(.plain)
+                .accessibilityLabel(row.isSubtracting ? "Subtract time entered" : "Add time entered")
+                .accessibilityHint(row.isSubtracting ? "Press to change to add" : "Press to change to subtract")
                 .accessibilityIdentifier("toggleButton")
             }
 
             // Error message — aligned under H/M/S fields, not the title
             if hasError {
                 HStack(spacing: 8) {
-                    Color.clear.frame(maxWidth: .infinity)
+                    Color.clear.frame(maxWidth: .infinity) // matches title field
                     Text("Numbers, you silly goose!")
                         .font(.caption)
                         .foregroundStyle(.red)
                         .frame(width: 55 * 3 + 8 * 2, alignment: .leading)
                         .accessibilityLabel("Invalid input. Numbers, you silly goose!")
-                    Color.clear.frame(width: 64)
+                    Color.clear.frame(width: 44) // matches toggle button
                 }
             }
         }
-        .padding(10)
-        .background(
-            RoundedRectangle(cornerRadius: 10)
-                .fill(row.isSubtracting ? Color.red.opacity(0.08) : Color.green.opacity(0.08))
-        )
+        .padding(.vertical, 2)
     }
 
     private func fieldBorder(valid: Bool) -> some View {

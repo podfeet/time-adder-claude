@@ -63,39 +63,50 @@ struct ContentView: View {
 
                 } else {
                     // MARK: Narrow layout — single column (iPhone)
-                    ScrollView {
-                        VStack(spacing: 16) {
-                            Text("Elapsed Time Calculator")
-                                .font(.largeTitle.bold())
-                                .frame(maxWidth: .infinity, alignment: .center)
-                                .multilineTextAlignment(.center)
-                            usageHint
-                            columnHeaders
-                            ForEach(rows) { row in
-                                TimeRowView(row: row)
-                            }
-                            totalSummarySection
-                            Button {
-                                rows.append(TimeRow())
-                            } label: {
-                                Text("Add Another Row")
-                                    .foregroundStyle(.blue)
-                                    .frame(maxWidth: .infinity)
-                                    .padding(.vertical, 8)
-                                    .background(Color.blue.opacity(0.12), in: RoundedRectangle(cornerRadius: 8))
-                            }
-                            .buttonStyle(.plain)
-                            .padding(.top, 4)
-                            .accessibilityIdentifier("addRowButton")
-                            exportButtons
-                            Divider().padding(.vertical, 8).accessibilityHidden(true)
-                            resetButton
-                            spreadsheetButton
-                            podfeetBranding
+                    // List (UITableView) is used instead of ScrollView to avoid the
+                    // multi-tap-required-to-focus bug SwiftUI ScrollView has on iOS.
+                    List {
+                        Text("Elapsed Time Calculator")
+                            .font(.largeTitle.bold())
+                            .frame(maxWidth: .infinity, alignment: .center)
+                            .multilineTextAlignment(.center)
+                            .plainRow()
+                        usageHint
+                            .plainRow()
+                        columnHeaders
+                            .plainRow(top: 4, bottom: 0)
+                        ForEach(rows) { row in
+                            TimeRowView(row: row)
+                                .plainRow(top: 4, bottom: 4)
                         }
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 16)
+                        totalSummarySection
+                            .plainRow()
+                        Button {
+                            rows.append(TimeRow())
+                        } label: {
+                            Text("Add Another Row")
+                                .foregroundStyle(.blue)
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 8)
+                                .background(Color.blue.opacity(0.12), in: RoundedRectangle(cornerRadius: 8))
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("addRowButton")
+                        .plainRow()
+                        exportButtons
+                            .plainRow(top: 0)
+                        Divider()
+                            .plainRow(top: 4, bottom: 4)
+                            .accessibilityHidden(true)
+                        resetButton
+                            .plainRow()
+                        spreadsheetButton
+                            .plainRow()
+                        podfeetBranding
+                            .plainRow(bottom: 8)
                     }
+                    .listStyle(.plain)
+                    .scrollContentBackground(.hidden)
                 }
             }
             .onAppear {
@@ -147,7 +158,8 @@ struct ContentView: View {
         Text("Enter a time in each row and choose Add (+) or Subtract (−). The total updates as you type.")
             .font(.callout)
             .foregroundStyle(.secondary)
-            .frame(maxWidth: .infinity, alignment: .leading)
+            .multilineTextAlignment(.center)
+            .frame(maxWidth: .infinity, alignment: .center)
             .accessibilityIdentifier("usageHint")
     }
 
@@ -362,6 +374,15 @@ struct ContentView: View {
     private func formatTotalValue(_ value: Double) -> String {
         if value == floor(value) { return String(Int(value)) }
         return String(format: "%.2f", value)
+    }
+}
+
+private extension View {
+    func plainRow(top: CGFloat = 6, bottom: CGFloat = 6) -> some View {
+        self
+            .listRowSeparator(.hidden)
+            .listRowBackground(Color.clear)
+            .listRowInsets(EdgeInsets(top: top, leading: 16, bottom: bottom, trailing: 16))
     }
 }
 
