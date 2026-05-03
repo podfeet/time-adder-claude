@@ -153,7 +153,7 @@ struct ContentView: View {
     // MARK: - Subviews
 
     private var usageHint: some View {
-        Text("Enter a time in each row and choose Add (+) or Subtract (−).\nThe total updates as you type.")
+        Text("Enter a time in each row and choose Add (+) or\nSubtract (−). The total updates as you type.")
             .font(.callout)
             .foregroundStyle(.secondary)
             .multilineTextAlignment(.center)

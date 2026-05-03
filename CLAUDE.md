@@ -34,7 +34,7 @@ The original web app (HTML/CSS/JS/jQuery/Bootstrap) lives in `web/` for referenc
 - Xcode project fully built and working — all core features implemented
 - All tests passing (unit + UI/accessibility) when run on an **iPhone simulator** destination
 - Project renamed from `ElapsedTimeAdder` → `ElapsedTimeCalculator` (folder, scheme, targets)
-- `intuitive-interface` branch contains UX improvements (see below)
+- Wide (iPad/Mac) layout uses `NavigationSplitView` — fixes blank white left column that appeared with `NavigationStack` + `WindowGroup`
 
 ---
 
@@ -93,12 +93,15 @@ Four changes made to improve discoverability for new users:
 **Row layout** (both narrow and wide): title field on line 1 full-width; H/M/S fields + +/− picker share line 2. On iOS the title placeholder is just "title"; on macOS/iPadOS it says "title (opt)".
 
 **Wide layout (iPad/Mac):**
-- Sidebar (300pt, left) holds: title, usage hint, export buttons, spreadsheet button, branding
-- Main column (right) holds: total, column headers, rows, Add Another Row, Reset
-- Main column content capped at 560pt wide so rows don't stretch absurdly
+- Uses `NavigationSplitView` with `.balanced` style — sidebar left, detail right
+- Sidebar column width set to `640pt` via `.navigationSplitViewColumnWidth(min: 320, ideal: 640, max: 640)`
+- Sidebar holds: title, usage hint, export buttons (stacked, 320pt wide / 50% of sidebar), spreadsheet button, branding
+- Detail column holds: column headers, rows, total summary, Add Another Row, Reset
+- Detail column content capped at 560pt wide so rows don't stretch absurdly
 - Add Another Row and Reset buttons capped at 320pt, centered
 - Starts with 5 rows on wide layouts (via `.onAppear`), 2 on iPhone
-- Sidebar background extends to screen edge via `.ignoresSafeArea(edges: .leading)` on the HStack
+- Sidebar background: `Color.secondary.opacity(0.12)` with `.ignoresSafeArea(edges: .leading)`
+- `.prominentDetail` style hides the sidebar — don't use it; use `.balanced`
 
 **Things that didn't work / were reverted:**
 - Keyboard toolbar showing total above the numeric keypad — `Spacer()` inside `ToolbarItemGroup(placement: .keyboard)` creates an invisible tap-blocking overlay; splitting into separate `ToolbarItem` entries also caused severe input issues. Abandoned entirely.
@@ -116,4 +119,6 @@ Four changes made to improve discoverability for new users:
 - **`UIScrollView.appearance().delaysContentTouches = false`** breaks ALL SwiftUI gesture handling app-wide — never use it
 - **iPhone narrow layout uses `List` not `ScrollView`** — see "iPhone layout" section above for details and the `columnHeaders` alignment fix
 - **Worktree vs main project**: Claude Code runs in a git worktree (`.claude/worktrees/…`) but Xcode opens the main project directory — always edit files in `/Users/allison/htdocs/elapsed-time-calculator/ElapsedTimeCalculator/` not the worktree path
-- **Wide layout safe area**: use `.ignoresSafeArea(edges: .leading)` on the HStack (not just on the background color) to make the sidebar reach the left screen edge on iPad
+- **Wide layout safe area**: use `.ignoresSafeArea(edges: .leading)` on the sidebar `ScrollView` inside `NavigationSplitView` to make the sidebar background reach the left screen edge on iPad
+- **`NavigationSplitView` blank column**: `WindowGroup` on iPad creates a `UISplitViewController` primary column regardless of `NavigationStack` — only `NavigationSplitView` gives you explicit control over both columns. Use it for any wide layout with a sidebar.
+- **`.prominentDetail` hides the sidebar** — use `.balanced` to keep both columns visible
