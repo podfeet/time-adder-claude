@@ -36,6 +36,8 @@ The original web app (HTML/CSS/JS/jQuery/Bootstrap) lives in `web/` for referenc
 - Project renamed from `ElapsedTimeAdder` → `ElapsedTimeCalculator` (folder, scheme, targets)
 - Wide (iPad/Mac) layout uses `NavigationSplitView` — fixes blank white left column that appeared with `NavigationStack` + `WindowGroup`
 - Home screen display name is **"Time Adder"** (set via `INFOPLIST_KEY_CFBundleDisplayName` in `project.pbxproj`); App Store name set separately in App Store Connect as "Elapsed Time Calculator"
+- DocC documentation added for non-UI code (`TimeMath.swift`, `ExportHelpers.swift`, `TimeRow.swift`) — catalog at `ElapsedTimeCalculator.docc/`. Build with **Product → Build Documentation** in Xcode.
+- App icon updated — source at `assets/ElapsedTimeCalculatorIcon.png` (1024×1024); all required sizes generated via `sips` into `Assets.xcassets/AppIcon.appiconset/`
 
 ---
 
@@ -133,4 +135,6 @@ Four changes made to improve discoverability for new users:
 - **Segmented Picker is `segmentedControls` in XCTest**, not `buttons` — use `app.segmentedControls.matching(identifier:)` and check individual segment selection with `.buttons["+"].isSelected`
 - **List uses `app.swipeUp()` not `app.scrollViews`** — the narrow layout's `List` is a `UITableView`; swiping on the app directly is the most reliable approach
 - **WebKit axbundle duplicate warning** in test output is a simulator runtime issue, not an app bug — ignore it
+- **Free Apple Developer account certificates expire every 7 days** — when this happens, go to Xcode → Settings → Accounts → Manage Certificates, delete the expired certificate, create a new Apple Development one, then clean build (Cmd+Shift+K) and rebuild. Paid account ($99/year) required for TestFlight and App Store.
+- **Icon sizes**: `@2x` variants must be double the logical pixel size (e.g. `512@2x` = 1024px, `256@2x` = 512px, `128@2x` = 256px). Use `sips -z <h> <w> source --out dest` to generate. Source file lives at `assets/ElapsedTimeCalculatorIcon.png`.
 - **WCAG AA contrast**: `.secondary` foreground color (~2.85:1 on white) fails AA; `.blue` text on `.blue.opacity(0.12)` background (~2.5:1) also fails. Use `.primary` text with tinted backgrounds for color coding instead.
